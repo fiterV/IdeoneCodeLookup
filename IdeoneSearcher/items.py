@@ -13,3 +13,4 @@ class IdeonesearcherItem(scrapy.Item):
     # define the fields for your item here like:
     # name = scrapy.Field()
     url = scrapy.Field(output_processor=TakeFirst())
+    scrapedOn = scrapy.Field(output_processor=TakeFirst())

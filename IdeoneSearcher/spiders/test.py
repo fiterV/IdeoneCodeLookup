@@ -9,13 +9,15 @@ from termcolor import colored
 import urllib
 from urllib.parse import urljoin
 from xml.etree import ElementTree
+import datetime
 
 DEBUG = True
+DATE_FORMAT='%H-%m-%S %d %B %Y'
 
 def Debug():
     for i in range(10):
         print(colored(
-            '-----------------------------------------------------------------------------------------------> Look over here, boy',
+            '-----------------------------------------------------------------------------------------------> Look over here',
             color='red'))
 
 def writeHTMLToLogFile(sel):
@@ -60,6 +62,7 @@ class IdeoneSpider(Spider):
         if occs is not None:
             l = ItemLoader(item=IdeonesearcherItem(), response=response)
             l.add_value('url', str(response.url))
+            l.add_value('scrapedOn', datetime.datetime.now().strftime(DATE_FORMAT))
             yield l.load_item()
 
     def parse(self, response):
