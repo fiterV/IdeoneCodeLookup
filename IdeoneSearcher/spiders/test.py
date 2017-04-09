@@ -30,7 +30,8 @@ class IdeoneSpider(Spider):
     def __init__(self):
         dom = ElementTree.parse('../../settings.conf')
         self.regExpForCode=dom.find('substring').text
-        print(self.regExpForCode)
+        self.lastUrl = dom.find('lastUrl').text
+        print(self.lastUrl)
 
 
     #link to paste provided in link is like this http://ideone.com/<code>
@@ -68,11 +69,11 @@ class IdeoneSpider(Spider):
 
         for paste in links:
             yield scrapy.Request(url=paste, callback=self.pasteParse)
-        # next = self.getNext(response.url)
-        # if next=='http://ideone.com/recent/3':
-        # 	raise CloseSpider("Enough for this minute")
-        # print(colored('<---------------- {} ------------------------->'.format(next), color='green'))
-        #
-        # yield scrapy.Request(url=next, callback=self.parse)
+        next = self.getNext(response.url)
+        if next==self.lastUrl:
+        	raise CloseSpider("We've got to the last url")
+        print(colored('<---------------- {} ------------------------->'.format(next), color='green'))
+
+        yield scrapy.Request(url=next, callback=self.parse)
 
 
