@@ -2,13 +2,13 @@ import scrapy
 from scrapy.spider import Spider
 from scrapy.selector import Selector
 from scrapy.loader import ItemLoader
-from termcolor import colored
-from urllib.parse import urljoin
 from IdeoneSearcher.items import IdeonesearcherItem
+from scrapy.exceptions import CloseSpider
 import re
 from termcolor import colored
-from scrapy.exceptions import CloseSpider
 import urllib
+from urllib.parse import urljoin
+from xml.etree import ElementTree
 
 DEBUG = True
 
@@ -26,6 +26,12 @@ class IdeoneSpider(Spider):
     name='ideone'
     allowed_domains = ['ideone.com']
     start_urls = ['http://ideone.com/recent/']
+
+    def __init__(self):
+        dom = ElementTree.parse('../../settings.conf')
+        self.regExpForCode=dom.find('substring').text
+        print(self.regExpForCode)
+
 
     #link to paste provided in link is like this http://ideone.com/<code>
     #we need to transform it into http://ideone.com/plain/<code>
@@ -48,20 +54,12 @@ class IdeoneSpider(Spider):
 
     def pasteParse(self, response):
         sel = Selector(response)
-        #writeHTMLToLogFile(sel)
-        #Debug()
-        print(response.url)
         code=self.getProgramCode(response.url)
-        occs=re.search('bits', code)
+        occs=re.search(self.regExpForCode, code)
         if occs is not None:
-            #with open('result.json', 'a') as f:
-            #    print(response.url, file=f)
-
             l = ItemLoader(item=IdeonesearcherItem(), response=response)
             l.add_value('url', str(response.url))
             yield l.load_item()
-
-
 
     def parse(self, response):
         sel = Selector(response)
