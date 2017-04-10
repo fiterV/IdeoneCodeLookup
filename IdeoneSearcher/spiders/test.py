@@ -20,10 +20,6 @@ def Debug():
             '-----------------------------------------------------------------------------------------------> Look over here',
             color='red'))
 
-def writeHTMLToLogFile(sel):
-    with open('log.html', 'w') as f:
-        print(sel.xpath('//html').extract(), file=f)
-
 class IdeoneSpider(Spider):
     name='ideone'
     allowed_domains = ['ideone.com']
@@ -32,11 +28,8 @@ class IdeoneSpider(Spider):
     def __init__(self):
         config = ConfigParser()
         config.read('settings.conf')
-        print(config.sections())
         self.regExpForCode=config['IdeoneCodeLookupConfig']['RegExp']
         self.lastUrl = config['IdeoneCodeLookupConfig']['lastUrl']
-        print(self.regExpForCode)
-        print(self.lastUrl)
 
 
     #link to paste provided in link is like this http://ideone.com/<code>
@@ -45,17 +38,17 @@ class IdeoneSpider(Spider):
         link=link.replace('.com/', '.com/plain/')
         return urllib.request.urlopen(link).read().decode('utf-8')
 
-    def getNext(self, link):
-        le = len(link) - 1
-        next = ""
-        while (link[le].isdigit() == True):
-            next += link[le]
-            le -= 1
-        next = next[::-1]
-        if (next==""):
-        	next="0"
-        next = str(int(next) + 1);
-        next = urljoin('http://ideone.com/recent/', next)
+    #link example http://ideone.com/recent/<number of the Page>
+    def getNextLink(self, link):
+        #firstly we will take the number at the end of a string
+        #the simplest way - Regex
+        match = re.search('\d+', link)
+        if match is None:
+            next=0
+        else:
+            next = int(match.group())
+        next+=1
+        next = 'http://ideone.com/recent/{}'.format(next)
         return next
 
     def pasteParse(self, response):
@@ -75,11 +68,9 @@ class IdeoneSpider(Spider):
 
         for paste in links:
             yield scrapy.Request(url=paste, callback=self.pasteParse)
-        next = self.getNext(response.url)
-        if next==self.lastUrl:
-        	raise CloseSpider("We've got to the last url")
-        print(colored('<---------------- {} ------------------------->'.format(next), color='green'))
-
-        yield scrapy.Request(url=next, callback=self.parse)
+        next = self.getNextLink(response.url)
+        if next!=self.lastUrl:
+            print(colored('<---------------- {} ------------------------->'.format(next), color='green'))
+            yield scrapy.Request(url=next, callback=self.parse)
 
 
