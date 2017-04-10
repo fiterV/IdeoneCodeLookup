@@ -63,8 +63,7 @@ class IdeoneSpider(Spider):
 
     def parse(self, response):
         sel = Selector(response)
-        links = [urljoin('http://ideone.com', i) for i in sel.xpath('//strong/a/@href').extract()]
-
+        links = [urljoin('http://ideone.com', i) for i in sel.xpath('//strong/a/@href').extract() if (i.find('recent')==-1)]
 
         for paste in links:
             yield scrapy.Request(url=paste, callback=self.pasteParse)
