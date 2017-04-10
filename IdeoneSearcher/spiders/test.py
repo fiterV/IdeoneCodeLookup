@@ -8,8 +8,8 @@ import re
 from termcolor import colored
 import urllib
 from urllib.parse import urljoin
-from xml.etree import ElementTree
 import datetime
+from configparser import ConfigParser
 
 DEBUG = True
 DATE_FORMAT='%H-%m-%S %d %B %Y'
@@ -30,9 +30,12 @@ class IdeoneSpider(Spider):
     start_urls = ['http://ideone.com/recent/']
 
     def __init__(self):
-        dom = ElementTree.parse('../../settings.conf')
-        self.regExpForCode=dom.find('substring').text
-        self.lastUrl = dom.find('lastUrl').text
+        config = ConfigParser()
+        config.read('settings.conf')
+        print(config.sections())
+        self.regExpForCode=config['IdeoneCodeLookupConfig']['RegExp']
+        self.lastUrl = config['IdeoneCodeLookupConfig']['lastUrl']
+        print(self.regExpForCode)
         print(self.lastUrl)
 
 
