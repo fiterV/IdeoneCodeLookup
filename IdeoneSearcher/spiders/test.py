@@ -1,5 +1,5 @@
 import scrapy
-from scrapy.spider import Spider
+from scrapy.spiders import Spider
 from scrapy.selector import Selector
 from scrapy.loader import ItemLoader
 from IdeoneSearcher.items import IdeonesearcherItem
