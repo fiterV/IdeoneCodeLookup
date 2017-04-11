@@ -12,7 +12,12 @@ Example of the file:
 `RegExp=924844033`<br/>
 `lastUrl=http://ideone.com/recent/5`<br/>
 
-To execute the program: `scrapy crawl ideone`
+To execute the program: 
+
+`scrapy crawl ideone`
+
 You can store result to [JSON](https://en.wikipedia.org/wiki/JSON) or [CSV](https://en.wikipedia.org/wiki/Comma-separated_values):
+
 `scrapy crawl ideone -t json -o res.json`
+
 `scrapy crawl ideone -t csv -o res.csv`
