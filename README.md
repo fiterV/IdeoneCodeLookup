@@ -3,15 +3,16 @@
 ## Overview
 A script, that let you find the code on [Ideone](https://ideone.com) substring of which matches some [RegExp](https://en.wikipedia.org/wiki/Regular_expression)
 
-## How to use
+## Configuration
 
 **settings.conf**-script main settings.<br>
-Example of the file:
 
 `[IdeoneCodeLookupConfig]`<br>
-`RegExp=924844033`<br/>
+`RegExp=bits`<br/>
 `lastUrl=http://ideone.com/recent/5`<br/>
+That basically means that we're going to scrape all codes to **.../recent/5** and select only ones that have **bits** substring in them
 
+## Usage 
 To execute the program: 
 
 `scrapy crawl ideone`
