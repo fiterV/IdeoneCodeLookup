@@ -15,6 +15,10 @@ SPIDER_MODULES = ['IdeoneSearcher.spiders']
 NEWSPIDER_MODULE = 'IdeoneSearcher.spiders'
 
 
+ITEM_PIPELINES = {
+    'IdeoneSearcher.pipelines.IdeonesearcherPipeline': 300,
+}
+
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 #USER_AGENT = 'IdeoneSearcher (+http://www.yourdomain.com)'
 
