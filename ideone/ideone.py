@@ -6,6 +6,7 @@ import scrapy
 from scrapy.crawler import CrawlerProcess
 from scrapy.utils.project import get_project_settings
 
+os.chdir('/bin/ideone')
 parser = argparse.ArgumentParser()
 parser.add_argument('-r', '--regexp', help='Regular expression for the substring in the code')
 parser.add_argument('-c', '--count', help='Amount of pages that you want to scrape')
