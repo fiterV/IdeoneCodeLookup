@@ -5,12 +5,13 @@ IdeoneCodeLookup
 Overview
 ========
 
-A script, that let you find the code on .._Ideone: https://ideone.com  substring of which matches some .._RegExp: https://en.wikipedia.org/wiki/Regular_expression 
+A script, that let you find the code on `Ideone <https://ideone.com>`_ substring of which matches some `RegExp <https://en.wikipedia.org/wiki/Regular_expression>`_
 
-Install
-=======
 
-The quick way::
+Installation
+============
+
+For Debian based systems::
 
     ./install.sh
 
